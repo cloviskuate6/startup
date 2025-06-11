@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une visite{% endblock %}
+
+{% block body %}
+<h1>Ajouter une nouvelle visite</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.pays) }}
+    {{ form_row(form.lieu) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.heureDebut) }}
+    {{ form_row(form.duree) }}
+    {{ form_row(form.heureFin) }}
+    <button class="btn btn-success mt-3">Créer</button>
+{{ form_end(form) }}
+
+<a href="{{ path('visite_index') }}">⬅ Retour à la liste des visites</a>
+{% endblock %}

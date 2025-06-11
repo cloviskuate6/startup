@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Guide{% endblock %}
+
+{% block body %}
+<h1>Fiche du guide</h1>
+
+<p><strong>Nom :</strong> {{ guide.nom }}</p>
+<p><strong>Prénom :</strong> {{ guide.prenom }}</p>
+<p><strong>Pays :</strong> {{ guide.pays }}</p>
+<p><strong>Statut :</strong> {{ guide.statut }}</p>
+<p><strong>Photo :</strong> <img src="{{ guide.photo }}" width="100"></p>
+
+<a href="{{ path('guide_index') }}">⬅ Retour</a>
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un visiteur{% endblock %}
+
+{% block body %}
+<h1>Ajouter un visiteur</h1>
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">Ajouter</button>
+{{ form_end(form) }}
+
+<a href="{{ path('visite_show', {'id': visite.id}) }}">Retour à la visite</a>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Guides{% endblock %}
+
+{% block body %}
+<h1>Liste des guides</h1>
+
+<a href="{{ path('guide_new') }}">➕ Ajouter un guide</a>
+
+<ul>
+    {% for guide in guides %}
+        <li>
+            {{ guide.prenom }} {{ guide.nom }} - {{ guide.statut }} ({{ guide.pays }})
+            [<a href="{{ path('guide_show', {'id': guide.id}) }}">voir</a>]
+            [<a href="{{ path('guide_edit', {'id': guide.id}) }}">éditer</a>]
+        </li>
+    {% else %}
+        <li>Aucun guide enregistré.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

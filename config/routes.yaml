@@ -1,0 +1,85 @@
+# config/routes.yaml
+
+app_login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+app_logout:
+  path: /logout
+  controller: App\Controller\SecurityController::logout
+app_accueil:
+  path: /accueil
+  controller: App\Controller\AccueilController::index
+# Route de sécurité (connexion)
+# Tableau de bord (à adapter si besoin)
+dashboard:
+  path: /
+  controller: App\Controller\VisiteController::index
+
+# Guides touristiques
+guide_index:
+  path: /guide
+  controller: App\Controller\GuideController::index
+
+guide_new:
+  path: /guide/new
+  controller: App\Controller\GuideController::new
+
+guide_show:
+  path: /guide/{id}
+  controller: App\Controller\GuideController::show
+
+guide_edit:
+  path: /guide/{id}/edit
+  controller: App\Controller\GuideController::edit
+
+guide_delete:
+  path: /guide/{id}
+  controller: App\Controller\GuideController::delete
+  methods: POST
+
+# Visites
+visite_index:
+  path: /visite
+  controller: App\Controller\VisiteController::index
+
+visite_new:
+  path: /visite/new
+  controller: App\Controller\VisiteController::new
+
+visite_show:
+  path: /visite/{id}
+  controller: App\Controller\VisiteController::show
+
+visite_edit:
+  path: /visite/{id}/edit
+  controller: App\Controller\VisiteController::edit
+
+visite_delete:
+  path: /visite/{id}
+  controller: App\Controller\VisiteController::delete
+  methods: POST
+
+# Visiteurs
+visiteur:
+  path: /visiteur/{id}
+  controller: App\Controller\VisiteurController::index
+  methods: POST
+
+visiteur_new:
+  path: /visiteur/new/{id}
+  controller: App\Controller\VisiteurController::new
+
+# Utilisateurs
+user:
+  path: /user
+  controller: App\Controller\UserController::index
+
+user_new:
+  path: /user/new
+  controller: App\Controller\UserController::new
+
+# Statistiques
+stats_index:
+  path: /admin/stats
+  controller: App\Controller\StatistiquesController::index

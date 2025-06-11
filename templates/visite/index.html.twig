@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des visites{% endblock %}
+
+{% block body %}
+<h1>🗺️ Liste des visites</h1>
+
+{% if visites is empty %}
+    <p>Aucune visite enregistrée.</p>
+{% else %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Pays</th>
+                <th>Lieu</th>
+                <th>Date</th>
+                <th>Heure début</th>
+                <th>Durée</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for visite in visites %}
+                <tr>
+                    <td>{{ visite.pays }}</td>
+                    <td>{{ visite.lieu }}</td>
+                    <td>{{ visite.date|date('d/m/Y') }}</td>
+                    <td>{{ visite.heureDebut|date('H:i') }}</td>
+                    <td>{{ visite.duree }}h</td>
+                    <td>
+                        <a href="{{ path('visite_show', {'id': visite.id}) }}" class="btn btn-sm btn-info">👁 Voir</a>
+                        <a href="{{ path('visite_edit', {'id': visite.id}) }}" class="btn btn-sm btn-warning">✏️ Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+<hr class="my-4">
+<h2>➕ Ajouter une nouvelle visite</h2>
+
+<div class="card p-3 mt-3">
+    {{ form_start(form) }}
+        {{ form_row(form.pays) }}
+        {{ form_row(form.lieu) }}
+        {{ form_row(form.date) }}
+        {{ form_row(form.heureDebut) }}
+        {{ form_row(form.duree) }}
+        {{ form_row(form.heureFin) }}
+        <button class="btn btn-success mt-2">Créer</button>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

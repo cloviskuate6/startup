@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+<h1>Statistiques</h1>
+
+<h2>Visites par mois</h2>
+<ul>
+    {% for v in visitesParMois %}
+        <li>Mois {{ v.mois }} : {{ v.total }} visite(s)</li>
+    {% endfor %}
+</ul>
+
+<h2>Visites par guide</h2>
+<ul>
+    {% for g in visitesParGuide %}
+        <li>{{ g.prenom }} {{ g.nom }} : {{ g.total }} visite(s)</li>
+    {% endfor %}
+</ul>
+
+<h2>Taux de présence par mois</h2>
+<ul>
+    {% for p in presenceParMois %}
+        <li>
+            Mois {{ p.mois }} : {{ p.presents }}/{{ p.total_visiteurs }} présents
+            ({{ (p.presents * 100 / p.total_visiteurs)|round(1) }}%)
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
