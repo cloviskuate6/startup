@@ -10,20 +10,41 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/visite')]
 class VisiteController extends AbstractController
 {
     #[Route('/', name: 'visite_index', methods: ['GET', 'POST'])]
-    public function index(Request $request, VisiteRepository $visiteRepository, EntityManagerInterface $em): Response
+    public function index(Request $request, VisiteRepository $visiteRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $visite = new Visite();
         $form = $this->createForm(VisiteType::class, $visite);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $photoFile = $form->get('photo')->getData();
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                try {
+                    $photoFile->move(
+                        $this->getParameter('photos_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer l’erreur ici si besoin
+                }
+
+                $visite->setPhoto($newFilename);
+            }
+
             $em->persist($visite);
             $em->flush();
+
             return $this->redirectToRoute('visite_index');
         }
 
@@ -34,13 +55,31 @@ class VisiteController extends AbstractController
     }
 
     #[Route('/new', name: 'visite_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $visite = new Visite();
         $form = $this->createForm(VisiteType::class, $visite);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $photoFile = $form->get('photo')->getData();
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                try {
+                    $photoFile->move(
+                        $this->getParameter('photos_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer l’erreur ici si besoin
+                }
+
+                $visite->setPhoto($newFilename);
+            }
+
             $em->persist($visite);
             $em->flush();
 
@@ -49,6 +88,7 @@ class VisiteController extends AbstractController
 
         return $this->render('visite/new.html.twig', [
             'form' => $form->createView(),
+            'visite' => $visite, // Correction : on passe l'objet à la vue
         ]);
     }
 
@@ -61,13 +101,32 @@ class VisiteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'visite_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Visite $visite, EntityManagerInterface $em): Response
+    public function edit(Request $request, Visite $visite, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(VisiteType::class, $visite);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $photoFile = $form->get('photo')->getData();
+            if ($photoFile) {
+                $originalFilename = pathinfo($photoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoFile->guessExtension();
+
+                try {
+                    $photoFile->move(
+                        $this->getParameter('photos_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gérer l’erreur ici si besoin
+                }
+
+                $visite->setPhoto($newFilename);
+            }
+
             $em->flush();
+
             return $this->redirectToRoute('visite_index');
         }
 
@@ -80,7 +139,7 @@ class VisiteController extends AbstractController
     #[Route('/{id}', name: 'visite_delete', methods: ['POST'])]
     public function delete(Request $request, Visite $visite, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$visite->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $visite->getId(), $request->request->get('_token'))) {
             $em->remove($visite);
             $em->flush();
         }

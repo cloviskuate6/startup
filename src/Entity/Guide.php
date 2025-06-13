@@ -1,5 +1,5 @@
 <?php
-// src/Entity/Guide.php
+
 namespace App\Entity;
 
 use App\Repository\GuideRepository;
@@ -25,7 +25,7 @@ class Guide
     private ?string $photo = null;
 
     #[ORM\Column(length: 50)]
-    private string $statut; // 'actif' ou 'inactif'
+    private string $statut;
 
     #[ORM\Column(length: 100)]
     private string $pays;
@@ -38,5 +38,97 @@ class Guide
         $this->visites = new ArrayCollection();
     }
 
-    // ... getters et setters (nom, prenom, statut, etc.)
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+        return $this;
+    }
+
+    public function getPrenom(): string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+        return $this;
+    }
+
+    public function getStatut(): string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
+        return $this;
+    }
+
+    public function getPays(): string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): self
+    {
+        $this->pays = $pays;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Visite>
+     */
+    public function getVisites(): Collection
+    {
+        return $this->visites;
+    }
+
+    public function addVisite(Visite $visite): self
+    {
+        if (!$this->visites->contains($visite)) {
+            $this->visites[] = $visite;
+            $visite->setGuide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVisite(Visite $visite): self
+    {
+        if ($this->visites->removeElement($visite)) {
+            if ($visite->getGuide() === $this) {
+                $visite->setGuide(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->prenom . ' ' . $this->nom;
+    }
 }

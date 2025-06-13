@@ -3,14 +3,15 @@
 {% block title %}Liste des visites{% endblock %}
 
 {% block body %}
-<h1>🗺️ Liste des visites</h1>
+<h1 class="my-4">Liste des visites</h1>
 
 {% if visites is empty %}
     <p>Aucune visite enregistrée.</p>
 {% else %}
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped">
         <thead>
             <tr>
+                <th>Image</th>
                 <th>Pays</th>
                 <th>Lieu</th>
                 <th>Date</th>
@@ -22,6 +23,13 @@
         <tbody>
             {% for visite in visites %}
                 <tr>
+                    <td>
+                        {% if visite.photo %}
+                            <img src="{{ asset('uploads/photos/' ~ visite.photo) }}" alt="Photo" width="100">
+                        {% else %}
+                            <span class="text-muted">Aucune image</span>
+                        {% endif %}
+                    </td>
                     <td>{{ visite.pays }}</td>
                     <td>{{ visite.lieu }}</td>
                     <td>{{ visite.date|date('d/m/Y') }}</td>
@@ -38,18 +46,20 @@
 {% endif %}
 
 <hr class="my-4">
+
 <h2>➕ Ajouter une nouvelle visite</h2>
 
 <div class="card p-3 mt-3">
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
         {{ form_row(form.pays) }}
         {{ form_row(form.lieu) }}
         {{ form_row(form.date) }}
         {{ form_row(form.heureDebut) }}
         {{ form_row(form.duree) }}
-        {{ form_row(form.heureFin) }}
+        {{ form_row(form.photo) }}
+        {{ form_row(form.commentaire) }}
+        {{ form_row(form.guide) }}
         <button class="btn btn-success mt-2">Créer</button>
     {{ form_end(form) }}
 </div>
-
 {% endblock %}

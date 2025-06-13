@@ -5,8 +5,23 @@
 {% block body %}
 <h1>Créer un guide</h1>
 
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+    <div class="mb-3">
+        {{ form_row(form.nom) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.prenom) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.pays) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.statut) }}
+    </div>
+    <div class="mb-3">
+        {{ form_row(form.photo) }}
+    </div>
+
     <button class="btn btn-success">Enregistrer</button>
 {{ form_end(form) }}
 

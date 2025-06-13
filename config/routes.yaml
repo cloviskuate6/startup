@@ -1,5 +1,4 @@
-# config/routes.yaml
-
+# Sécurité
 app_login:
   path: /login
   controller: App\Controller\SecurityController::login
@@ -7,14 +6,18 @@ app_login:
 app_logout:
   path: /logout
   controller: App\Controller\SecurityController::logout
+
+# Page d'accueil
 app_accueil:
   path: /accueil
   controller: App\Controller\AccueilController::index
-# Route de sécurité (connexion)
-# Tableau de bord (à adapter si besoin)
-dashboard:
+
+# Redirection de / vers /accueil
+homepage_redirect:
   path: /
-  controller: App\Controller\VisiteController::index
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    route: app_accueil
 
 # Guides touristiques
 guide_index:
@@ -36,7 +39,7 @@ guide_edit:
 guide_delete:
   path: /guide/{id}
   controller: App\Controller\GuideController::delete
-  methods: POST
+  methods: [POST]
 
 # Visites
 visite_index:
@@ -58,13 +61,13 @@ visite_edit:
 visite_delete:
   path: /visite/{id}
   controller: App\Controller\VisiteController::delete
-  methods: POST
+  methods: [POST]
 
 # Visiteurs
 visiteur:
   path: /visiteur/{id}
   controller: App\Controller\VisiteurController::index
-  methods: POST
+  methods: [GET]
 
 visiteur_new:
   path: /visiteur/new/{id}
