@@ -5,10 +5,17 @@
 {% block body %}
 <h1>Ajouter un visiteur</h1>
 
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">Ajouter</button>
-{{ form_end(form) }}
+{% if visite is defined %}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">Ajouter</button>
+    {{ form_end(form) }}
 
-<a href="{{ path('visite_show', {'id': visite.id}) }}">Retour à la visite</a>
+    <a href="{{ path('visite_show', {'id': visite.id}) }}">Retour à la visite</a>
+{% else %}
+    <div class="alert alert-warning">
+        Aucune visite sélectionnée. Veuillez choisir une visite pour ajouter un visiteur.
+    </div>
+    <a href="{{ path('visiteur_new_selection') }}" class="btn btn-secondary">🔍 Choisir une visite</a>
+{% endif %}
 {% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisir une visite{% endblock %}
+
+{% block body %}
+<h1>Choisir une visite</h1>
+
+<form method="get" action="{{ path('visiteur_new_selection_redirect') }}">
+    <div class="form-group">
+        <label for="visite">Sélectionnez une visite :</label>
+        <select name="id" id="visite" class="form-control">
+            {% for visite in visites %}
+                <option value="{{ visite.id }}">
+                    {{ visite.pays }} - {{ visite.lieu }} - {{ visite.date ? visite.date|date('d/m/Y') : 'Date inconnue' }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Ajouter un visiteur à cette visite</button>
+</form>
+
+<a href="{{ path('visiteur_index') }}" class="btn btn-secondary mt-2">⬅ Retour à la liste des visiteurs</a>
+{% endblock %}

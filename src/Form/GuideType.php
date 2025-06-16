@@ -15,13 +15,21 @@ class GuideType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom', TextType::class)
-            ->add('prenom', TextType::class)
-            ->add('statut', TextType::class)
-            ->add('pays', TextType::class)
+            ->add('nom', TextType::class, [
+                'label' => 'Nom',
+            ])
+            ->add('prenom', TextType::class, [
+                'label' => 'Prénom',
+            ])
+            ->add('statut', TextType::class, [
+                'label' => 'Statut',
+            ])
+            ->add('pays', TextType::class, [
+                'label' => 'Pays',
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo du guide (JPG ou PNG)',
-                'mapped' => false, // Ne lie pas directement à l'entité
+                'mapped' => false,
                 'required' => false,
                 'constraints' => [
                     new File([

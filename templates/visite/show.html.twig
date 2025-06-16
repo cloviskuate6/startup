@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la visite{% endblock %}
+
+{% block body %}
+    <h1>Détail de la visite</h1>
+
+    <div class="mb-3">
+
+        
+    </div>
+
+    <h2>Liste des visiteurs ({{ visite.visiteurs|length }}/18)</h2>
+    {% if visite.visiteurs|length > 0 %}
+        <ul>
+            {% for visiteur in visite.visiteurs %}
+                <li>{{ visiteur.nom }} {{ visiteur.prenom }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun visiteur inscrit.</p>
+    {% endif %}
+
+    <a href="{{ path('visiteur_new', {'id': visite.id}) }}" class="btn btn-primary mt-3">➕ Ajouter un visiteur</a>
+    <a href="{{ path('visite_index') }}" class="btn btn-secondary mt-3">⬅ Retour à la liste des visites</a>
+{% endblock %}

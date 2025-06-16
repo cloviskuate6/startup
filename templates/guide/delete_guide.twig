@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suppression d'un guide{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">🗑 Supprimer le guide</h1>
+
+    <div class="alert alert-warning">
+        <p>⚠️ Es-tu sûr de vouloir supprimer <strong>{{ guide.prenom }} {{ guide.nom }}</strong> ? Cette action est irréversible.</p>
+    </div>
+
+    <div class="mb-3">
+        {% if guide.photo %}
+            <img src="{{ asset('uploads/photos/' ~ guide.photo) }}" alt="Photo de {{ guide.nom }}" class="img-thumbnail" style="max-width: 200px;">
+        {% else %}
+            <img src="{{ asset('uploads/photos/default.jpg') }}" alt="Pas de photo" class="img-thumbnail" style="max-width: 200px;">
+        {% endif %}
+    </div>
+
+    <form method="post" action="{{ path('guide_delete', {'id': guide.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ guide.id) }}">
+        
+        <button type="submit" class="btn btn-danger">
+            🗑 Supprimer définitivement
+        </button>
+        <a href="{{ path('guide_index') }}" class="btn btn-secondary">
+            ⬅️ Annuler
+        </a>
+    </form>
+{% endblock %}

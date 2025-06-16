@@ -3,31 +3,45 @@
 {% block title %}Ajouter un utilisateur{% endblock %}
 
 {% block body %}
-<h1>Créer un nouvel utilisateur</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Créer un nouvel utilisateur</h1>
 
-{{ form_start(form) }}
-    <div class="form-group">
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.nom) }}
-        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.prenom) }}
-        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.password) }}
-        {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.roles) }}
-        {{ form_widget(form.roles) }}
-    </div>
-    <button class="btn btn-success mt-3">Créer</button>
-{{ form_end(form) }}
+    {{ form_start(form) }}
 
-<a href="{{ path('user_index') }}">⬅ Retour à la liste</a>
+        <div class="mb-3">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.nom) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.nom) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.prenom) }}
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.prenom) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.password) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.roles) }}
+            {{ form_widget(form.roles) }}
+            {{ form_errors(form.roles) }}
+        </div>
+
+        <button class="btn btn-success">💾 Créer</button>
+
+    {{ form_end(form) }}
+
+    <a href="{{ path('user_index') }}" class="btn btn-secondary mt-3">⬅ Retour à la liste</a>
+</div>
 {% endblock %}

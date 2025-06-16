@@ -3,19 +3,50 @@
 {% block title %}Guides{% endblock %}
 
 {% block body %}
-<h1>Liste des guides</h1>
+    <h1>Liste des guides</h1>
 
-<a href="{{ path('guide_new') }}">➕ Ajouter un guide</a>
-
-<ul>
-    {% for guide in guides %}
-        <li>
-            {{ guide.prenom }} {{ guide.nom }} - {{ guide.statut }} ({{ guide.pays }})
-            [<a href="{{ path('guide_show', {'id': guide.id}) }}">voir</a>]
-            [<a href="{{ path('guide_edit', {'id': guide.id}) }}">éditer</a>]
-        </li>
-    {% else %}
-        <li>Aucun guide enregistré.</li>
+    {# Messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
     {% endfor %}
-</ul>
+
+    <a href="{{ path('guide_new') }}" class="btn btn-primary mb-3">➕ Ajouter un guide</a>
+
+    {% if guides|length > 0 %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for guide in guides %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        {% if guide.photo %}
+                            <img src="{{ asset('uploads/photos/' ~ guide.photo) }}" class="card-img-top" alt="Photo de {{ guide.nom }}">
+                        {% else %}
+                            <img src="{{ asset('uploads/photos/default.jpg') }}" class="card-img-top" alt="Pas de photo">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ guide.prenom }} {{ guide.nom }}</h5>
+                            <p class="card-text">
+                                <strong>Statut :</strong> {{ guide.statut }}<br>
+                                <strong>Pays :</strong> {{ guide.pays }}
+                            </p>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a href="{{ path('guide_show', {'id': guide.id}) }}" class="btn btn-sm btn-outline-primary">Voir</a>
+                            <a href="{{ path('guide_edit', {'id': guide.id}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                            <form method="post" action="{{ path('guide_delete', {'id': guide.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ guide.id) }}">
+                                <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucun guide enregistré.</p>
+    {% endif %}
 {% endblock %}

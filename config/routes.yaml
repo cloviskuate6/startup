@@ -37,9 +37,8 @@ guide_edit:
   controller: App\Controller\GuideController::edit
 
 guide_delete:
-  path: /guide/{id}
-  controller: App\Controller\GuideController::delete
-  methods: [POST]
+  path: /guide/{id}/delete
+  controller: App\Controller\GuideController::Delete
 
 # Visites
 visite_index:
@@ -64,17 +63,34 @@ visite_delete:
   methods: [POST]
 
 # Visiteurs
-visiteur:
-  path: /visiteur/{id}
+visiteur_index:
+  path: /visiteur
   controller: App\Controller\VisiteurController::index
-  methods: [GET]
 
 visiteur_new:
   path: /visiteur/new/{id}
   controller: App\Controller\VisiteurController::new
 
+visiteur_show:
+  path: /visiteur/show/{id}
+  controller: App\Controller\VisiteurController::show
+
+visiteur_delete:
+  path: /visiteur/{id}
+  controller: App\Controller\VisiteurController::delete
+  methods: [POST]
+
+visiteur_new_selection_redirect:
+  path: /visiteur/choisir-visite/redirection
+  controller: App\Controller\VisiteurController::redirectToNew
+  methods: [GET]
+
+visiteur_new_selection:
+  path: /visiteur/choisir-visite
+  controller: App\Controller\VisiteurController::selectVisite
+  methods: [GET]
 # Utilisateurs
-user:
+user_index:
   path: /user
   controller: App\Controller\UserController::index
 

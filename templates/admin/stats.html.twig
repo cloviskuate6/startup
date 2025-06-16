@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">📊 Statistiques</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+
+            <h3 class="mt-4">🗓️ Visites par mois</h3>
+            <table class="table table-bordered table-striped text-center shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mois</th>
+                        <th>Nombre de visites</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in visitesParMois %}
+                        <tr>
+                            <td>{{ stat.mois }}</td>
+                            <td>{{ stat.total }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2">Aucune donnée disponible</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3 class="mt-5">🧭 Visites par guide</h3>
+            <table class="table table-bordered table-striped text-center shadow-sm">
+                <thead class="table-red">
+                    <tr>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Nombre de visites</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in visitesParGuide %}
+                        <tr>
+                            <td>{{ stat.prenom }}</td>
+                            <td>{{ stat.nom }}</td>
+                            <td>{{ stat.total }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Aucune donnée disponible</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3 class="mt-5">🙋 Présence des visiteurs par mois</h3>
+            <table class="table table-bordered table-striped text-center shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mois</th>
+                        <th>Total visiteurs</th>
+                        <th>Présents</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in presenceParMois %}
+                        <tr>
+                            <td>{{ stat.mois }}</td>
+                            <td>{{ stat.total_visiteurs }}</td>
+                            <td>{{ stat.presents }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">Aucune donnée disponible</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

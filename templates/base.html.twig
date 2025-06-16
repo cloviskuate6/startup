@@ -4,22 +4,112 @@
     <meta charset="UTF-8">
     <title>{% block title %}TravelParadise{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+        body {
+            margin-bottom: 60px; /* Hauteur du footer */
+            background-image: url('{{ asset("images/mon_images.jpg") }}');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            background-color: rgba(31, 84, 76, 0.9);
+            color: white;
+        }
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<body class="container mt-4">
-    <header class="mb-4">
-        <h1>TravelParadise</h1>
-       
-        <hr>
-    </header>
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: #1f524C;">
+        <div class="container-fluid">
+            <div class="d-flex flex-grow-1">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{path('app_accueil')}}">Accueil</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <img src="{{ asset('images/logo.jpg') }}" width="80px" alt="Logo">
+            </div>
+        </div>
+            
+        <a href="{{ path('guide_index') }}"> Guides</a> |
+        <a href="{{ path('visite_index') }}"> Visites</a> |
+        <a href="{{ path('visiteur_index') }}"> Visiteur</a> |
+        <a href="{{ path('user_index') }}">Utilisateurs</a> |
+        <a href="{{ path('stats_index') }}"> Statistiques</a> |
+        {% if app.user %}
+            Connecté : {{ app.user.email }} |
+            <a href="{{ path('app_logout') }}"> Déconnexion</a>
+        {% else %}
+            <a href="{{ path('app_login') }}"> Connexion</a>
+        {% endif %}
+    </nav>
 
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
+    <div class="container content-wrapper">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
 
-    {% for message in app.flashes('error') %}
-        <div class="alert alert-danger">{{ message }}</div>
-    {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
 
-    {% block body %}{% endblock %}
+        {% block body %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    &copy; <span id="current-year"></span> TravelParadise - 
+                    <span id="live-clock"></span> (Fuseau horaire local)
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mise à jour de l'année en cours
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Horloge en temps réel
+        function updateClock() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                timeZoneName: 'short'
+            };
+            document.getElementById('live-clock').textContent = now.toLocaleDateString('fr-FR', options);
+        }
+        
+        // Mise à jour immédiate et toutes les secondes
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
 </body>
 </html>

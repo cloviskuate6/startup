@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du visiteur{% endblock %}
+
+{% block body %}
+<h1>Détail du visiteur</h1>
+
+<ul class="list-group mb-4">
+    <li class="list-group-item"><strong>Nom :</strong> {{ visiteur.nom }}</li>
+    <li class="list-group-item"><strong>Prénom :</strong> {{ visiteur.prenom }}</li>
+    {% if visiteur.visite %}
+        <li class="list-group-item">
+            <strong>Visite associée :</strong>
+            <a href="{{ path('visite_show', { id: visiteur.visite.id }) }}">
+                {{ visiteur.visite.titre }}
+            </a>
+        </li>
+    {% else %}
+        <li class="list-group-item"><strong>Visite associée :</strong> Aucune</li>
+    {% endif %}
+</ul>
+
+<a href="{{ path('visiteur_index') }}" class="btn btn-secondary">⬅ Retour à la liste des visiteurs</a>
+{% endblock %}

@@ -10,13 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/guide')]
 class GuideController extends AbstractController
 {
-    #[Route('/', name: 'guide_index', methods: ['GET'])]
     public function index(GuideRepository $guideRepository): Response
     {
         return $this->render('guide/index.html.twig', [
@@ -24,7 +21,6 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'guide_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
         $guide = new Guide();
@@ -52,6 +48,8 @@ class GuideController extends AbstractController
 
             $em->persist($guide);
             $em->flush();
+
+            $this->addFlash('success', 'Le guide a été ajouté avec succès.');
             return $this->redirectToRoute('guide_index');
         }
 
@@ -60,17 +58,25 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'guide_show', methods: ['GET'])]
-    public function show(Guide $guide): Response
+    public function show(int $id, GuideRepository $guideRepository): Response
     {
+        $guide = $guideRepository->find($id);
+        if (!$guide) {
+            throw $this->createNotFoundException('Guide non trouvé.');
+        }
+
         return $this->render('guide/show.html.twig', [
             'guide' => $guide,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'guide_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Guide $guide, EntityManagerInterface $em, SluggerInterface $slugger): Response
+    public function edit(int $id, Request $request, GuideRepository $guideRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
+        $guide = $guideRepository->find($id);
+        if (!$guide) {
+            throw $this->createNotFoundException('Guide non trouvé.');
+        }
+
         $form = $this->createForm(GuideType::class, $guide);
         $form->handleRequest($request);
 
@@ -94,6 +100,7 @@ class GuideController extends AbstractController
             }
 
             $em->flush();
+            $this->addFlash('success', 'Le guide a été modifié avec succès.');
             return $this->redirectToRoute('guide_index');
         }
 
@@ -103,12 +110,29 @@ class GuideController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'guide_delete', methods: ['POST'])]
-    public function delete(Request $request, Guide $guide, EntityManagerInterface $em): Response
+    public function confirmDelete(int $id, GuideRepository $guideRepository): Response
     {
+        $guide = $guideRepository->find($id);
+        if (!$guide) {
+            throw $this->createNotFoundException('Guide non trouvé.');
+        }
+
+        return $this->render('guide/delete.html.twig', [
+            'guide' => $guide,
+        ]);
+    }
+
+    public function delete(Request $request, int $id, GuideRepository $guideRepository, EntityManagerInterface $em): Response
+    {
+        $guide = $guideRepository->find($id);
+        if (!$guide) {
+            throw $this->createNotFoundException('Guide non trouvé.');
+        }
+
         if ($this->isCsrfTokenValid('delete' . $guide->getId(), $request->request->get('_token'))) {
             $em->remove($guide);
             $em->flush();
+            $this->addFlash('success', 'Le guide a été supprimé avec succès.');
         }
 
         return $this->redirectToRoute('guide_index');

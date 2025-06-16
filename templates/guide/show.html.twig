@@ -1,16 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Guide{% endblock %}
+{% block title %}Détails du guide{% endblock %}
 
 {% block body %}
-<h1>Fiche du guide</h1>
+<h1>Détails du guide</h1>
 
-<p><strong>Nom :</strong> {{ guide.nom }}</p>
-<p><strong>Prénom :</strong> {{ guide.prenom }}</p>
-<p><strong>Pays :</strong> {{ guide.pays }}</p>
-<p><strong>Statut :</strong> {{ guide.statut }}</p>
-<p><strong>Photo :</strong> <img src="{{ guide.photo }}" width="100"></p>
+<ul>
+    <li>Nom : {{ guide.nom }}</li>
+    <li>Prénom : {{ guide.prenom }}</li>
+    <li>Pays : {{ guide.pays }}</li>
+    <li>Statut : {{ guide.statut }}</li>
+    {% if guide.photo %}
+        <li>
+            Photo :
+            <img src="{{ asset('uploads/photos/' ~ guide.photo) }}" alt="Photo de {{ guide.nom }}" style="max-width: 200px;">
+        </li>
+    {% endif %}
+</ul>
 
-<a href="{{ path('guide_index') }}">⬅ Retour</a>
+<a href="{{ path('guide_index') }}">⬅ Retour à la liste</a>
+<a href="{{ path('guide_edit', {'id': guide.id}) }}">✏️ Modifier</a>
+
+{# 🔴 FORMULAIRE DE SUPPRESSION #}
+<form method="post" action="{{ path('guide_delete', {'id': guide.id}) }}" onsubmit="return confirm('Confirmer la suppression ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ guide.id) }}">
+    <button class="btn btn-danger">🗑️ Supprimer</button>
+</form>
 {% endblock %}
-
